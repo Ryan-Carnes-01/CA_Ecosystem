@@ -13,11 +13,15 @@ def main():
 
     board = create_empty_board(args.rows, args.columns)
     populate_board(board, args.prey_density, args.predator_density)
-    #while(1):
+
     visualize_board(board)
-    #update_cell_state(board)
-    #update_board_state(board)
-    print("End of main")
+    update_board_state(board)
+
+    visualize_board(board)
+    update_board_state(board)
+
+    visualize_board(board)
+    update_board_state(board)
 
 if __name__ == "__main__":
     main()
