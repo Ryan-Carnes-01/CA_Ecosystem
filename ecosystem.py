@@ -3,32 +3,73 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
+
+#FINISH ADDING BORDER COMBINATION OPTIONS FOR ALL OF THESE (only done for left/right)
+
 prey_move_left_options=[9209,#upper right corner, predator below
                         2909,#lower right corner, predator above
                         2202,#surrounded by preds except for left
                         2209,#right border, preds above and below
                         9202,#top border, preds below and right
-                        2902] #bottom border, preds above and right
-
+                        2902,#bottom border, preds above and right
+                        1102,
+                        1201,
+                        1202,
+                        2101,
+                        2102,
+                        2201]
 prey_move_right_options=[9290, #upper left corner, predator below
                          2990, #lower left corner, predator above
                          2220, #surrounded by preds except for right
                          2290, #left border, preds above and below
                          9220, #top border, preds below and left
-                         2920] #bottom border, preds above and left
-
-prey_move_down_options = []
-
-prey_move_up_options = []
+                         2920, #bottom border, preds above and left
+                         1120,
+                         1210,
+                         1220,
+                         2110,
+                         2120,
+                         2210] 
+prey_move_down_options=[1012,
+                        1021,
+                        1022,
+                        2011,
+                        2012,
+                        2021,
+                        2022]
+prey_move_up_options=[112,
+                      121,
+                      122,
+                      211,
+                      212,
+                      221,
+                      222]
+prey_move_up_down_left_options=[2]
+prey_move_up_down_options=[12,21,22]
+prey_move_up_down_right_options=[20]
+prey_move_up_left_options=[102,201,202]
+prey_move_up_right_options=[120,210,220]
+prey_move_up_left_right_options=[200]
+prey_move_down_left_options=[1002,2001,2002]
+prey_move_down_right_options=[1020,2010,2020]
+prey_move_left_right_options=[1100,1200,2100,2200]
+prey_move_down_left_right_options=[2000]
 
 
 pred_move_left_options = []
-
 pred_move_right_options = []
-
 pred_move_down_options = []
-
 pred_move_up_options = []
+pred_move_up_down_left_options=[]
+pred_move_up_down_options=[]
+pred_move_up_down_right_options=[]
+pred_move_up_left_options=[]
+pred_move_up_right_options=[]
+pred_move_up_left_right_options=[]
+pred_move_down_left_options=[]
+pred_move_down_right_options=[]
+pred_move_left_right_options=[]
+pred_move_down_left_right_options=[]
 
 
 class Prey:
@@ -236,10 +277,13 @@ def update_cell(board,cell,option):
         elif option_int in prey_move_right_options: #if reason to move right
             print("     - PREY right move")
             move_right(board,cell)
-        #if reason to move down
-            #move down
-        #if reason to move up
-            #move up
+        elif option_int in prey_move_down_options:#if reason to move down
+            print("     - PREY down move")
+            move_down(board,cell)
+        elif option_int in prey_move_up_options:#if reason to move up
+            print("     - PREY up move")
+            move_up(board,cell)
+        #elif all other prey_move_options
 
 def update_board_state(board):
     for row in board:
