@@ -3,6 +3,34 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
+prey_move_left_options=[9209,#upper right corner, predator below
+                        2909,#lower right corner, predator above
+                        2202,#surrounded by preds except for left
+                        2209,#right border, preds above and below
+                        9202,#top border, preds below and right
+                        2902] #bottom border, preds above and right
+
+prey_move_right_options=[9290, #upper left corner, predator below
+                         2990, #lower left corner, predator above
+                         2220, #surrounded by preds except for right
+                         2290, #left border, preds above and below
+                         9220, #top border, preds below and left
+                         2920] #bottom border, preds above and left
+
+prey_move_down_options = []
+
+prey_move_up_options = []
+
+
+pred_move_left_options = []
+
+pred_move_right_options = []
+
+pred_move_down_options = []
+
+pred_move_up_options = []
+
+
 class Prey:
     def __init__(self):
         self.reproduce = False
@@ -19,7 +47,7 @@ class Predator:
 
 def move_up(board,cell):
     cell_row,cell_col = cell.location
-    print(f"Moving cell up from {cell.location} to {cell_row-1} {cell_col}")
+    #print(f"Moving cell up from {cell.location} to {cell_row-1} {cell_col}")
     board[cell_row-1][cell_col] = cell
     board[cell_row][cell_col] = None
     cell.location = (cell_row-1, cell_col)
@@ -27,7 +55,7 @@ def move_up(board,cell):
 
 def move_down(board,cell):
     cell_row,cell_col = cell.location
-    print(f"Moving cell down from {cell.location} to {cell_row+1} {cell_col}")
+    #print(f"Moving cell down from {cell.location} to {cell_row+1} {cell_col}")
     board[cell_row+1][cell_col] = cell
     board[cell_row][cell_col] = None
     cell.location = (cell_row+1, cell_col)
@@ -35,7 +63,7 @@ def move_down(board,cell):
 
 def move_right(board,cell):
     cell_row,cell_col = cell.location
-    print(f"Moving cell right from {cell.location} to {cell_row} {cell_col+1}")
+    #print(f"Moving cell right from {cell.location} to {cell_row} {cell_col+1}")
     board[cell_row][cell_col+1] = cell
     board[cell_row][cell_col] = None
     cell.location = (cell_row, cell_col+1)
@@ -43,7 +71,7 @@ def move_right(board,cell):
 
 def move_left(board,cell):
     cell_row,cell_col = cell.location
-    print(f"Moving cell left from {cell.location} to {cell_row} {cell_col-1}")
+    #print(f"Moving cell left from {cell.location} to {cell_row} {cell_col-1}")
     board[cell_row][cell_col-1] = cell
     board[cell_row][cell_col] = None
     cell.location = (cell_row, cell_col-1)
@@ -88,7 +116,7 @@ def populate_board(board, prey_density, predator_density):
     return
 
 def visualize_board(board):
-    print("Visualizing board...")
+    print("\nVisualizing board...")
     empty_color = 'white'
     prey_color = 'green'
     predator_color = 'red'
@@ -176,28 +204,42 @@ def get_neighborhood_option(board, cell):
     return neighborhood_checklist
 
 def update_cell(board,cell,option):
+    #[up,down,left,right]
+    #0 = open, 1 = Prey, 2 = Predator, 9 = border
     cell_row,cell_col = cell.location
     option_str = ''.join(map(str, option))
     option_int = int(option_str)
-    print(option_int)
+    print(f"CELL: {cell}, OPTION: {option_int}")
     #if cell has already moved, dont move it
     if cell.move == False:
-        print("CELL ALREADY MOVED, RETURNING")
+        print("     - CELL ALREADY MOVED, SKIPPING")
         return
-    if(isinstance(cell, Predator)):
-        #update cell based on option
-        if '9' in option_str:
-            return #(IGNORE BORDER CASES FOR NOW)
-        if(option_int == 0):
-            #no neighbors, move randomly
+    if(isinstance(cell, Predator)): #update predator based on option
+        if(option_int == 0): #no neighbors, move randomly
+            print("     - PREDATOR random move")
             move_random(board,cell)
-    elif(isinstance(cell, Prey)):
-        #update cell based on option
-        if '9' in option_str:
-            return #(IGNORE BORDER CASES FOR NOW)
-        if(option_int == 0):
-            #no neighbors, move randomly
+        #if reason to move left
+            #move left
+        #if reason to move right
+            #move right
+        #if reason to move down
+            #move down
+        #if reason to move up
+            #move up
+    elif(isinstance(cell, Prey)): #update prey based on option
+        if(option_int == 0): #no neighbors, move randomly
+            print("     - PREY random move") 
             move_random(board,cell)
+        elif option_int in prey_move_left_options: #if reason to move left
+            print("     - PREY left move")
+            move_left(board,cell)
+        elif option_int in prey_move_right_options: #if reason to move right
+            print("     - PREY right move")
+            move_right(board,cell)
+        #if reason to move down
+            #move down
+        #if reason to move up
+            #move up
 
 def update_board_state(board):
     for row in board:
