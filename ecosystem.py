@@ -3,8 +3,16 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
-
 #FINISH ADDING BORDER COMBINATION OPTIONS FOR ALL OF THESE (only done for left/right)
+#9xx9 Upper Right Corner
+#x9x9 Lower Right Corner
+#9x9x Upper Left Corner
+#x99x Lower Left Corner
+
+#9xxx Upper Border
+#x9xx Lower Border
+#xx9x Left Border
+#xxx9 Right Border
 
 prey_move_left_options=[9209,#upper right corner, predator below
                         2909,#lower right corner, predator above
