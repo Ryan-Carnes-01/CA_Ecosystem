@@ -156,7 +156,7 @@ def populate_board(board, prey_density, predator_density):
             board[row][col].location = (row, col)
     return
 
-def visualize_board(board):
+def visualize_board(board, filename = None):
     print("\nVisualizing board...")
     empty_color = 'white'
     prey_color = 'green'
@@ -172,17 +172,20 @@ def visualize_board(board):
             elif isinstance(board[i][j], Predator):
                 board_array[i][j] = board[i][j].value
 
-    #Plot
+   #Plot
     plt.figure(figsize=(8, 6))
     plt.imshow(board_array, cmap=cmap, interpolation='nearest')
-    cbar = plt.colorbar(ticks=[0, 1, 2], label='Entity')
-    cbar.set_ticks([0, 1, 2])
+    cbar = plt.colorbar(ticks=[0, 1, 2])
     cbar.set_ticklabels(['Empty', 'Prey', 'Predator'])
     plt.title('Cellular Automata Board')
     plt.xlabel('Columns')
     plt.ylabel('Rows')
     plt.grid(False)
-    plt.show()
+    if filename:
+        plt.savefig(filename) #Save the figure to a file
+        plt.close() #Close the figure to free up memory
+    else:
+        plt.show() #Show the plot if no filename is specified
 
 def get_neighborhood_option(board, cell):
     neighborhood_checklist = [9,9,9,9] #[up,down,left,right]
