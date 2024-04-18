@@ -3,7 +3,8 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
-#FINISH ADDING BORDER COMBINATION OPTIONS FOR ALL OF THESE (only done for left/right)
+#FINISH ADDING BORDER COMBINATION OPTIONS FOR ALL OF THESE
+#FINISH ADDING BREEDING BEHAVIOR
 #9xx9 Upper Right Corner
 #x9x9 Lower Right Corner
 #9x9x Upper Left Corner
@@ -64,20 +65,20 @@ prey_move_left_right_options=[1100,1200,2100,2200]
 prey_move_down_left_right_options=[2000]
 
 
-pred_move_left_options = []
-pred_move_right_options = []
-pred_move_down_options = []
-pred_move_up_options = []
-pred_move_up_down_left_options=[]
-pred_move_up_down_options=[]
-pred_move_up_down_right_options=[]
-pred_move_up_left_options=[]
-pred_move_up_right_options=[]
-pred_move_up_left_right_options=[]
-pred_move_down_left_options=[]
-pred_move_down_right_options=[]
-pred_move_left_right_options=[]
-pred_move_down_left_right_options=[]
+pred_move_left_options = [10,12,210,212,2010,2012,2202,2210,2212]
+pred_move_right_options = [1,21,201,221,2001,2021,2201,2220,2221]
+pred_move_down_options = [100,102,120,122,2022,2100,2102,2120,2122]
+pred_move_up_options = [222,1000,1002,1020,1022,1200,1202,1220,1222]
+pred_move_up_down_left_options=[2,1110,1112]
+pred_move_up_down_options=[22,1100,1102,1120,1122]
+pred_move_up_down_right_options=[20,1101,1121]
+pred_move_up_left_options=[202,1010,1012,1210,1212]
+pred_move_up_right_options=[220,1001,1021,1201,1221]
+pred_move_up_left_right_options=[200,1011,1211,]
+pred_move_down_left_options=[110,112,2002,2110,2112]
+pred_move_down_right_options=[101,121,2020,2101,2121]
+pred_move_left_right_options=[11,211,2011,2200,2211]
+pred_move_down_left_right_options=[111,2000,2111]
 
 
 class Prey:
@@ -101,7 +102,6 @@ def move_up(board,cell):
     board[cell_row][cell_col] = None
     cell.location = (cell_row-1, cell_col)
     cell.move = False
-
 def move_down(board,cell):
     cell_row,cell_col = cell.location
     #print(f"Moving cell down from {cell.location} to {cell_row+1} {cell_col}")
@@ -109,7 +109,6 @@ def move_down(board,cell):
     board[cell_row][cell_col] = None
     cell.location = (cell_row+1, cell_col)
     cell.move = False
-
 def move_right(board,cell):
     cell_row,cell_col = cell.location
     #print(f"Moving cell right from {cell.location} to {cell_row} {cell_col+1}")
@@ -117,7 +116,6 @@ def move_right(board,cell):
     board[cell_row][cell_col] = None
     cell.location = (cell_row, cell_col+1)
     cell.move = False
-
 def move_left(board,cell):
     cell_row,cell_col = cell.location
     #print(f"Moving cell left from {cell.location} to {cell_row} {cell_col-1}")
@@ -126,6 +124,74 @@ def move_left(board,cell):
     cell.location = (cell_row, cell_col-1)
     cell.move = False
 
+def move_up_down_left(board,cell):
+    random_number = random.randint(0, 2)
+    if random_number == 0:
+        move_up(board,cell)
+    elif random_number == 1:
+        move_down(board,cell)
+    elif random_number == 2:
+        move_left(board,cell)
+def move_up_down(board,cell):
+    random_number = random.randint(0, 1)
+    if random_number == 0:
+        move_up(board,cell)
+    elif random_number == 1:
+        move_down(board,cell)
+def move_up_down_right(board,cell):
+    random_number = random.randint(0, 2)
+    if random_number == 0:
+        move_up(board,cell)
+    elif random_number == 1:
+        move_down(board,cell)
+    elif random_number == 2:
+        move_right(board,cell)
+def move_up_left(board,cell):
+    random_number = random.randint(0,1)
+    if random_number == 0:
+        move_up(board,cell)
+    elif random_number == 1:
+        move_left(board,cell)
+def move_up_right(board,cell):
+    random_number = random.randint(0, 1)
+    if random_number == 0:
+        move_up(board,cell)
+    elif random_number == 1:
+        move_right(board,cell)
+def move_up_left_right(board,cell):
+    random_number = random.randint(0, 2)
+    if random_number == 0:
+        move_up(board,cell)
+    elif random_number == 1:
+        move_left(board,cell)
+    elif random_number == 2:
+        move_right(board,cell)
+def move_down_left(board,cell):
+    random_number = random.randint(0, 1)
+    if random_number == 0:
+        move_down(board,cell)
+    elif random_number == 1:
+        move_left(board,cell)
+def move_down_right(board,cell):
+    random_number = random.randint(0, 1)
+    if random_number == 0:
+        move_down(board,cell)
+    elif random_number == 1:
+        move_right(board,cell)
+def move_left_right(board,cell):
+    random_number = random.randint(0, 1)
+    if random_number == 0:
+        move_left(board,cell)
+    elif random_number == 1:
+        move_right(board,cell)
+def move_down_left_right(board,cell):
+    random_number = random.randint(0, 2)
+    if random_number == 0:
+        move_down(board,cell)
+    elif random_number == 1:
+        move_left(board,cell)
+    elif random_number == 2:
+        move_right(board,cell)
 def move_random(board,cell):
     random_number = random.randint(0, 3)
     if random_number == 0:
@@ -267,34 +333,71 @@ def update_cell(board,cell,option):
         print("     - CELL ALREADY MOVED, SKIPPING")
         return
     if(isinstance(cell, Predator)): #update predator based on option
-        if(option_int == 0): #no neighbors, move randomly
-            print("     - PREDATOR random move")
+        if(option_int == 0 or option_int == 1111): #no neighbors or surrounded by prey, move randomly
             move_random(board,cell)
-        #if reason to move left
-            #move left
-        #if reason to move right
-            #move right
-        #if reason to move down
-            #move down
-        #if reason to move up
-            #move up
+        elif option_int in pred_move_left_options: #if reason to move left
+            move_left(board,cell)
+        elif option_int in pred_move_right_options: #if reason to move right
+            move_right(board,cell)
+        elif option_int in pred_move_down_options: #if reason to move down
+            move_down(board,cell)
+        elif option_int in pred_move_up_options: #if reason to move up
+            move_up(board,cell)
+        #elif all other predator_move_options
+        elif option_int in pred_move_up_down_left_options:
+            move_up_down_left(board,cell)
+        elif option_int in pred_move_up_down_options:
+            move_up_down(board,cell)
+        elif option_int in pred_move_up_down_right_options:
+            move_up_down_right(board,cell)
+        elif option_int in pred_move_up_left_options:
+            move_up_left(board,cell)
+        elif option_int in pred_move_up_right_options:
+            move_up_right(board,cell)
+        elif option_int in pred_move_up_left_right_options:
+            move_up_left_right(board,cell)
+        elif option_int in pred_move_down_left_options:
+            move_down_left(board,cell)
+        elif option_int in pred_move_down_right_options:
+            move_down_right(board,cell)
+        elif option_int in pred_move_left_right_options:
+            move_left_right(board,cell)
+        elif option_int in pred_move_down_left_right_options:
+            move_down_left_right(board,cell)
+        
+        
     elif(isinstance(cell, Prey)): #update prey based on option
         if(option_int == 0): #no neighbors, move randomly
-            print("     - PREY random move") 
             move_random(board,cell)
         elif option_int in prey_move_left_options: #if reason to move left
-            print("     - PREY left move")
             move_left(board,cell)
         elif option_int in prey_move_right_options: #if reason to move right
-            print("     - PREY right move")
             move_right(board,cell)
         elif option_int in prey_move_down_options:#if reason to move down
-            print("     - PREY down move")
             move_down(board,cell)
         elif option_int in prey_move_up_options:#if reason to move up
-            print("     - PREY up move")
             move_up(board,cell)
         #elif all other prey_move_options
+        elif option_int in prey_move_up_down_left_options:
+            move_up_down_left(board,cell)
+        elif option_int in prey_move_up_down_options:
+            move_up_down(board,cell)
+        elif option_int in prey_move_up_down_right_options:
+            move_up_down_right(board,cell)
+        elif option_int in prey_move_up_left_options:
+            move_up_left(board,cell)
+        elif option_int in prey_move_up_right_options:
+            move_up_right(board,cell)
+        elif option_int in prey_move_up_left_right_options:
+            move_up_left_right(board,cell)
+        elif option_int in prey_move_down_left_options:
+            move_down_left(board,cell)
+        elif option_int in prey_move_down_right_options:
+            move_down_right(board,cell)
+        elif option_int in prey_move_left_right_options:
+            move_left_right(board,cell)
+        elif option_int in prey_move_down_left_right_options:
+            move_down_left_right(board,cell)
 
 def update_board_state(board):
     for row in board:
