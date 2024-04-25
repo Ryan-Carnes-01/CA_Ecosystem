@@ -6,3 +6,11 @@ ecosystem.py - contains the class definitions and helper functions for the 2D CA
 main.py - contains the driver code that implements the functions from ecosystem.py. Run this one to run the CA.
 # To run the program
 python main.py {--help} {--rows} int {--columns} int {--prey_density} float between 0.0-1.0 {--predator_density} float between 0.0-1.0
+
+
+
+# TODO
+- implement breeding
+- add breeding rules
+- add iteration cooldown on prey breeding
+- add iteration lifespan on predator
