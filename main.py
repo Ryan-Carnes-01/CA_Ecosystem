@@ -15,18 +15,18 @@ def main():
     parser.add_argument('--columns', type=int, default=100, help='Number of columns in the grid')
     parser.add_argument('--prey_density', type=float, default=0.1, help='Density of populated cells representing "prey" (between 0 and 1)')
     parser.add_argument('--predator_density', type=float, default=0.05, help='Density of populated cells representing "predators" (between 0 and 1)')
+    parser.add_argument('--predator_energy', type=int, default=20,help="Number of iterations a predator can survive without eating before dying")
     args = parser.parse_args()
-    print(f"ROWS: {args.rows}\nCOLUMNS: {args.columns}\nPREY_DENSITY: {args.prey_density}\nPREDATOR_DENSITY: {args.predator_density}\n")
 
     #set up board
     board = create_empty_board(args.rows, args.columns)
-    populate_board(board, args.prey_density, args.predator_density)
+    populate_board(board, args.prey_density, args.predator_density, args.predator_energy)
 
     #run for itrs iterations, save generated images to filename.
     for i in range(args.itrs):
         filename = os.path.join(directory, f'image_{i}.png')
         visualize_board(board, filename)
-        update_board_state(board)
+        update_board_state(board, args.predator_energy)
 
         # Check if the ecosystem has collapsed
         prey_count, predator_count = count_prey_predators(board)
