@@ -3,7 +3,7 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
-#FINISH ADDING BREEDING BEHAVIOR
+#FINISH ADDING BREEDING BEHAVIOR - fill out option integers
 
 prey_move_left_options=[9209,2909,2202,2209,9202,2902,1102,1201,1202,2101,2102,2201,9209,2909,9102,9201,9202,1902,2901,2902,1209,2109,2209]
 prey_move_right_options=[9290,2990,2220,2290,9220,2920,1120,1210,1220,2110,2120,2210,9290,2990,9120,9210,9220,1920,2910,2920,1290,2190,2290,] 
@@ -19,7 +19,21 @@ prey_move_down_left_options=[1002,2001,2002,9009,9002,2009]
 prey_move_down_right_options=[1020,2010,2020,9090,9020,2090]
 prey_move_left_right_options=[1100,1200,2100,2200,9200,2900]
 prey_move_down_left_right_options=[2000,9000,]
-#prey breeding options
+
+prey_breed_left_options=[9109,1909,9101,1901,1109,1101]
+prey_breed_right_options=[9190,1990,9110,1910,1190,1110] 
+prey_breed_down_options=[9019,9091,9011,1091,1019,1011]
+prey_breed_up_options=[919,991,911,191,119,111]
+prey_breed_up_down_left_options=[1]
+prey_breed_up_down_options=[91,19,11]
+prey_breed_up_down_right_options=[10]
+prey_breed_up_left_options=[901,109,101]
+prey_breed_up_right_options=[910,190,110]
+prey_breed_up_left_right_options=[100,]
+prey_breed_down_left_options=[9001,1009,1001]
+prey_breed_down_right_options=[9010,1090,1010,]
+prey_breed_left_right_options=[9100,1900]
+prey_breed_down_left_right_options=[1000]
 
 pred_move_left_options = [10,12,210,212,2010,2012,2202,2210,2212,9019,9209,9219,919,2909,2919,9010,9012,9202,9210,9212,910,912,2902,2910,2912,19,219,2019,2209,2219]
 pred_move_right_options = [1,21,201,221,2001,2021,2201,2220,2221,9091,9290,9291,991,2990,2991,9001,9021,9201,9220,9221,901,921,2901,2920,2921,91,291,2091,2290,2291,]
@@ -78,7 +92,6 @@ def move_left(board,cell):
     board[cell_row][cell_col] = None
     cell.location = (cell_row, cell_col-1)
     cell.move = False
-
 def move_up_down_left(board,cell):
     random_number = random.randint(0, 2)
     if random_number == 0:
@@ -157,6 +170,96 @@ def move_random(board,cell):
         move_left(board,cell)
     elif random_number == 3:
         move_right(board,cell)
+
+def breed_left(board,cell):
+    cell_row,cell_col = cell.location
+    board[cell_row][cell_col-1] = Prey()
+    board[cell_row][cell_col-1].location = (cell_row,cell_col-1)
+    board[cell_row][cell_col-1].move = False
+def breed_right(board,cell): 
+    cell_row,cell_col = cell.location
+    board[cell_row][cell_col+1] = Prey()
+    board[cell_row][cell_col+1].location = (cell_row,cell_col+1)
+    board[cell_row][cell_col+1].move = False
+def breed_down(board,cell):
+    cell_row,cell_col = cell.location
+    board[cell_row+1][cell_col] = Prey()
+    board[cell_row+1][cell_col].location = (cell_row+1,cell_col)
+    board[cell_row+1][cell_col].move = False
+def breed_up(board,cell):
+    cell_row,cell_col = cell.location
+    board[cell_row-1][cell_col] = Prey()
+    board[cell_row-1][cell_col].location = (cell_row-1,cell_col)
+    board[cell_row-1][cell_col].move = False
+def breed_up_down_left(board,cell):
+    random_number = random.randint(0, 2)
+    if random_number == 0:
+        breed_up(board,cell)
+    elif random_number == 1:
+        breed_down(board,cell)
+    elif random_number == 2:
+        breed_left(board,cell)
+def breed_up_down(board,cell):
+    random_number = random.randint(0, 1)
+    if random_number == 0:
+        breed_up(board,cell)
+    elif random_number == 1:
+        breed_down(board,cell)
+def breed_up_down_right(board,cell):
+    random_number = random.randint(0, 2)
+    if random_number == 0:
+        breed_up(board,cell)
+    elif random_number == 1:
+        breed_down(board,cell)
+    elif random_number == 2:
+        breed_right(board,cell)
+def breed_up_left(board,cell):
+    random_number = random.randint(0,1)
+    if random_number == 0:
+        breed_up(board,cell)
+    elif random_number == 1:
+        breed_left(board,cell)
+def breed_up_right(board,cell):
+    random_number = random.randint(0, 1)
+    if random_number == 0:
+        breed_up(board,cell)
+    elif random_number == 1:
+        breed_right(board,cell)
+def breed_up_left_right(board,cell):
+    random_number = random.randint(0, 2)
+    if random_number == 0:
+        breed_up(board,cell)
+    elif random_number == 1:
+        breed_left(board,cell)
+    elif random_number == 2:
+        breed_right(board,cell)
+def breed_down_left(board,cell):
+    random_number = random.randint(0, 1)
+    if random_number == 0:
+        breed_down(board,cell)
+    elif random_number == 1:
+        breed_left(board,cell)
+def breed_down_right(board,cell):
+    random_number = random.randint(0, 1)
+    if random_number == 0:
+        breed_down(board,cell)
+    elif random_number == 1:
+        breed_right(board,cell)
+def breed_left_right(board,cell):
+    random_number = random.randint(0, 1)
+    if random_number == 0:
+        breed_left(board,cell)
+    elif random_number == 1:
+        breed_right(board,cell)
+def breed_down_left_right(board,cell):
+    random_number = random.randint(0, 2)
+    if random_number == 0:
+        breed_down(board,cell)
+    elif random_number == 1:
+        breed_left(board,cell)
+    elif random_number == 2:
+        breed_right(board,cell)
+
 
 def create_empty_board(rows, columns):
     print("Creating empty board...\n")
@@ -325,8 +428,7 @@ def update_cell(board,cell,option,predator_energy):
             move_left_right(board,cell)
         elif option_int in pred_move_down_left_right_options:
             move_down_left_right(board,cell)
-        
-        
+          
     elif(isinstance(cell, Prey)): #update prey based on option
         if(option_int == 0): #no neighbors, move randomly
             move_random(board,cell)
@@ -359,6 +461,34 @@ def update_cell(board,cell,option,predator_energy):
         elif option_int in prey_move_down_left_right_options:
             move_down_left_right(board,cell)
         #elif breeding
+        elif option_int in prey_breed_left_options:
+            breed_left(board,cell)
+        elif option_int in prey_breed_right_options:
+            breed_right(board,cell) 
+        elif option_int in prey_breed_down_options:
+            breed_down(board,cell)
+        elif option_int in prey_breed_up_options:
+            breed_up(board,cell)
+        elif option_int in prey_breed_up_down_left_options:
+            breed_up_down_left(board,cell)
+        elif option_int in prey_breed_up_down_options:
+            breed_up_down(board,cell)
+        elif option_int in prey_breed_up_down_right_options:
+            breed_up_down_right(board,cell)
+        elif option_int in prey_breed_up_left_options:
+            breed_up_left(board,cell)
+        elif option_int in prey_breed_up_right_options:
+            breed_up_right(board,cell)
+        elif option_int in prey_breed_up_left_right_options:
+            breed_up_left_right(board,cell)
+        elif option_int in prey_breed_down_left_options:
+            breed_down_left(board,cell)
+        elif option_int in prey_breed_down_right_options:
+            breed_down_right(board,cell)
+        elif option_int in prey_breed_left_right_options:
+            breed_left_right(board,cell)
+        elif option_int in prey_breed_down_left_right_options:
+            breed_down_left_right(board,cell)
 
 def count_prey_predators(board):
     prey_count = 0
@@ -370,7 +500,6 @@ def count_prey_predators(board):
             elif isinstance(cell, Predator):
                 predator_count += 1
     return prey_count, predator_count
-
 
 def update_board_state(board, predator_energy):
     for row in board:
