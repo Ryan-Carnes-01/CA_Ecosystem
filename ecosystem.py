@@ -52,7 +52,7 @@ class Predator:
         self.value = 2
         self.location = (0,0)
         self.move = True
-        self.energy = 15
+        self.energy = 20
 
 def move_up(board,cell):
     cell_row,cell_col = cell.location
@@ -163,7 +163,7 @@ def create_empty_board(rows, columns):
     board = [[None for _ in range(columns)] for _ in range(rows)]
     return board
 
-def populate_board(board, prey_density, predator_density):
+def populate_board(board, prey_density, predator_density, predator_energy):
     print("Populating board...\n")
     num_rows = len(board)
     num_cols = len(board[0])
@@ -183,6 +183,7 @@ def populate_board(board, prey_density, predator_density):
         if board[row][col] is None:
             board[row][col] = Predator()
             board[row][col].location = (row, col)
+            board[row][col].energy = predator_energy
     return
 
 def visualize_board(board, filename = None):
@@ -264,7 +265,7 @@ def get_neighborhood_option(board, cell):
 
     return neighborhood_checklist
 
-def update_cell(board,cell,option):
+def update_cell(board,cell,option,predator_energy):
     #[up,down,left,right]
     #0 = open, 1 = Prey, 2 = Predator, 9 = border
     cell_row,cell_col = cell.location
@@ -284,7 +285,7 @@ def update_cell(board,cell,option):
 
         for move, (row, col) in zip(option, potential_moves):
             if move == 1 and isinstance(board[row][col], Prey): #If a move is possible and there's prey
-                cell.energy = 20  #Reset energy if predator is going to eat prey
+                cell.energy = predator_energy  #Reset energy if predator is going to eat prey
                 break 
 
         if cell.move and cell.energy > 0: #starvation logic
@@ -371,12 +372,12 @@ def count_prey_predators(board):
     return prey_count, predator_count
 
 
-def update_board_state(board):
+def update_board_state(board, predator_energy):
     for row in board:
         for cell in row:
             if cell != None:
                 option = get_neighborhood_option(board, cell)
-                update_cell(board,cell,option)
+                update_cell(board,cell,option,predator_energy)
     #reset cell movement flag
     for row in board:
         for cell in row:
