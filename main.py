@@ -2,7 +2,7 @@ import argparse
 import os
 import subprocess
 from datetime import datetime
-from ecosystem import create_empty_board, populate_board, visualize_board, update_board_state
+from ecosystem import create_empty_board, populate_board, visualize_board, update_board_state, count_prey_predators
 
 def main():
     #initialize directory to store images/gif    
@@ -27,6 +27,13 @@ def main():
         filename = os.path.join(directory, f'image_{i}.png')
         visualize_board(board, filename)
         update_board_state(board)
+
+        # Check if the ecosystem has collapsed
+        prey_count, predator_count = count_prey_predators(board)
+        if prey_count == 0 or predator_count == 0:
+            print(f"Ecosystem collapse detected at iteration {i+1}.")
+            print(f"Remaining Prey: {prey_count}, Remaining Predators: {predator_count}")
+            break  # Terminate simulation if there are no prey or predators left
 
     #create gif out of saved images    
     subprocess.run(['python', 'gif_creator.py', directory, os.path.join('runs', f'video.gif')])

@@ -52,8 +52,7 @@ class Predator:
         self.value = 2
         self.location = (0,0)
         self.move = True
-        self.lifespan = 0
-        self.lifespan_counter = 0
+        self.energy = 15
 
 def move_up(board,cell):
     cell_row,cell_col = cell.location
@@ -277,6 +276,24 @@ def update_cell(board,cell,option):
         print("     - CELL ALREADY MOVED, SKIPPING")
         return
     if(isinstance(cell, Predator)): #update predator based on option
+        # PREDATOR STARVATION LOGIC
+        potential_moves = [(cell_row - 1, cell_col),   # Up  #look at all potential moves
+                           (cell_row + 1, cell_col),   # Down
+                           (cell_row, cell_col - 1),   # Left
+                           (cell_row, cell_col + 1)]   # Right
+
+        for move, (row, col) in zip(option, potential_moves):
+            if move == 1 and isinstance(board[row][col], Prey): #If a move is possible and there's prey
+                cell.energy = 20  #Reset energy if predator is going to eat prey
+                break 
+
+        if cell.move and cell.energy > 0: #starvation logic
+            cell.energy -= 1
+            if cell.energy == 0:
+                board[cell_row][cell_col] = None #predator dies
+                return  
+        #END OF PREDATOR STARVATION LOGIC
+
         if(option_int == 0 or option_int == 1111): #no neighbors or surrounded by prey, move randomly
             move_random(board,cell)
         elif option_int in pred_move_left_options: 
@@ -341,6 +358,18 @@ def update_cell(board,cell,option):
         elif option_int in prey_move_down_left_right_options:
             move_down_left_right(board,cell)
         #elif breeding
+
+def count_prey_predators(board):
+    prey_count = 0
+    predator_count = 0
+    for row in board:
+        for cell in row:
+            if isinstance(cell, Prey):
+                prey_count += 1
+            elif isinstance(cell, Predator):
+                predator_count += 1
+    return prey_count, predator_count
+
 
 def update_board_state(board):
     for row in board:
