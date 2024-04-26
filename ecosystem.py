@@ -52,8 +52,7 @@ class Predator:
         self.value = 2
         self.location = (0,0)
         self.move = True
-        self.lifespan = 0
-        self.lifespan_counter = 0
+        self.energy = 20
 
 def move_up(board,cell):
     cell_row,cell_col = cell.location
@@ -164,7 +163,7 @@ def create_empty_board(rows, columns):
     board = [[None for _ in range(columns)] for _ in range(rows)]
     return board
 
-def populate_board(board, prey_density, predator_density):
+def populate_board(board, prey_density, predator_density, predator_energy):
     print("Populating board...\n")
     num_rows = len(board)
     num_cols = len(board[0])
@@ -184,6 +183,7 @@ def populate_board(board, prey_density, predator_density):
         if board[row][col] is None:
             board[row][col] = Predator()
             board[row][col].location = (row, col)
+            board[row][col].energy = predator_energy
     return
 
 def visualize_board(board, filename = None):
@@ -265,7 +265,7 @@ def get_neighborhood_option(board, cell):
 
     return neighborhood_checklist
 
-def update_cell(board,cell,option):
+def update_cell(board,cell,option,predator_energy):
     #[up,down,left,right]
     #0 = open, 1 = Prey, 2 = Predator, 9 = border
     cell_row,cell_col = cell.location
@@ -277,6 +277,24 @@ def update_cell(board,cell,option):
         print("     - CELL ALREADY MOVED, SKIPPING")
         return
     if(isinstance(cell, Predator)): #update predator based on option
+        # PREDATOR STARVATION LOGIC
+        potential_moves = [(cell_row - 1, cell_col),   # Up  #look at all potential moves
+                           (cell_row + 1, cell_col),   # Down
+                           (cell_row, cell_col - 1),   # Left
+                           (cell_row, cell_col + 1)]   # Right
+
+        for move, (row, col) in zip(option, potential_moves):
+            if move == 1 and isinstance(board[row][col], Prey): #If a move is possible and there's prey
+                cell.energy = predator_energy  #Reset energy if predator is going to eat prey
+                break 
+
+        if cell.move and cell.energy > 0: #starvation logic
+            cell.energy -= 1
+            if cell.energy == 0:
+                board[cell_row][cell_col] = None #predator dies
+                return  
+        #END OF PREDATOR STARVATION LOGIC
+
         if(option_int == 0 or option_int == 1111): #no neighbors or surrounded by prey, move randomly
             move_random(board,cell)
         elif option_int in pred_move_left_options: 
@@ -342,12 +360,24 @@ def update_cell(board,cell,option):
             move_down_left_right(board,cell)
         #elif breeding
 
-def update_board_state(board):
+def count_prey_predators(board):
+    prey_count = 0
+    predator_count = 0
+    for row in board:
+        for cell in row:
+            if isinstance(cell, Prey):
+                prey_count += 1
+            elif isinstance(cell, Predator):
+                predator_count += 1
+    return prey_count, predator_count
+
+
+def update_board_state(board, predator_energy):
     for row in board:
         for cell in row:
             if cell != None:
                 option = get_neighborhood_option(board, cell)
-                update_cell(board,cell,option)
+                update_cell(board,cell,option,predator_energy)
     #reset cell movement flag
     for row in board:
         for cell in row:
