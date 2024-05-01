@@ -16,11 +16,12 @@ def main():
     parser.add_argument('--prey_density', type=float, default=0.1, help='Density of populated cells representing "prey" (between 0 and 1)')
     parser.add_argument('--predator_density', type=float, default=0.05, help='Density of populated cells representing "predators" (between 0 and 1)')
     parser.add_argument('--predator_energy', type=int, default=20,help="Number of iterations a predator can survive without eating before dying")
+    parser.add_argument('--breeding_cooldown', type=int, default=5,help="Number of iterations a prey has to wait before breeding again")
     args = parser.parse_args()
 
     #set up board
     board = create_empty_board(args.rows, args.columns)
-    populate_board(board, args.prey_density, args.predator_density, args.predator_energy)
+    populate_board(board, args.prey_density, args.predator_density, args.predator_energy,args.breeding_cooldown)
 
     #run for itrs iterations, save generated images to filename.
     for i in range(args.itrs):

@@ -176,21 +176,29 @@ def breed_left(board,cell):
     board[cell_row][cell_col-1] = Prey()
     board[cell_row][cell_col-1].location = (cell_row,cell_col-1)
     board[cell_row][cell_col-1].move = False
+    board[cell_row][cell_col-1].breeding_cooldown = cell.breeding_cooldown
+    board[cell_row][cell_col-1].breeding_cooldown_counter = 0
 def breed_right(board,cell): 
     cell_row,cell_col = cell.location
     board[cell_row][cell_col+1] = Prey()
     board[cell_row][cell_col+1].location = (cell_row,cell_col+1)
     board[cell_row][cell_col+1].move = False
+    board[cell_row][cell_col+1].breeding_cooldown = cell.breeding_cooldown
+    board[cell_row][cell_col+1].breeding_cooldown_counter = 0
 def breed_down(board,cell):
     cell_row,cell_col = cell.location
     board[cell_row+1][cell_col] = Prey()
     board[cell_row+1][cell_col].location = (cell_row+1,cell_col)
     board[cell_row+1][cell_col].move = False
+    board[cell_row+1][cell_col].breeding_cooldown = cell.breeding_cooldown
+    board[cell_row+1][cell_col].breeding_cooldown_counter = 0
 def breed_up(board,cell):
     cell_row,cell_col = cell.location
     board[cell_row-1][cell_col] = Prey()
     board[cell_row-1][cell_col].location = (cell_row-1,cell_col)
     board[cell_row-1][cell_col].move = False
+    board[cell_row-1][cell_col].breeding_cooldown = cell.breeding_cooldown
+    board[cell_row-1][cell_col].breeding_cooldown_counter = 0
 def breed_up_down_left(board,cell):
     random_number = random.randint(0, 2)
     if random_number == 0:
@@ -266,7 +274,7 @@ def create_empty_board(rows, columns):
     board = [[None for _ in range(columns)] for _ in range(rows)]
     return board
 
-def populate_board(board, prey_density, predator_density, predator_energy):
+def populate_board(board, prey_density, predator_density, predator_energy,breeding_cooldown):
     print("Populating board...\n")
     num_rows = len(board)
     num_cols = len(board[0])
@@ -279,6 +287,8 @@ def populate_board(board, prey_density, predator_density, predator_energy):
         if board[row][col] is None:
             board[row][col] = Prey()
             board[row][col].location = (row, col)
+            board[row][col].breeding_cooldown = breeding_cooldown
+            board[row][col].breeding_cooldown_counter = 0
     #Populate predators
     for _ in range(num_predators):
         row = random.randint(0, num_rows - 1)
@@ -430,6 +440,8 @@ def update_cell(board,cell,option,predator_energy):
             move_down_left_right(board,cell)
           
     elif(isinstance(cell, Prey)): #update prey based on option
+        if cell.breeding_cooldown_counter < cell.breeding_cooldown:
+            cell.breeding_cooldown_counter = cell.breeding_cooldown_counter + 1
         if(option_int == 0): #no neighbors, move randomly
             move_random(board,cell)
         elif option_int in prey_move_left_options: 
@@ -461,34 +473,52 @@ def update_cell(board,cell,option,predator_energy):
         elif option_int in prey_move_down_left_right_options:
             move_down_left_right(board,cell)
         #elif breeding
+        elif cell.breeding_cooldown_counter < cell.breeding_cooldown:
+            return
         elif option_int in prey_breed_left_options:
             breed_left(board,cell)
+            cell.breeding_cooldown_counter = 0
         elif option_int in prey_breed_right_options:
             breed_right(board,cell) 
+            cell.breeding_cooldown_counter = 0
         elif option_int in prey_breed_down_options:
             breed_down(board,cell)
+            cell.breeding_cooldown_counter = 0
         elif option_int in prey_breed_up_options:
             breed_up(board,cell)
+            cell.breeding_cooldown_counter = 0
         elif option_int in prey_breed_up_down_left_options:
             breed_up_down_left(board,cell)
+            cell.breeding_cooldown_counter = 0
         elif option_int in prey_breed_up_down_options:
             breed_up_down(board,cell)
+            cell.breeding_cooldown_counter = 0
         elif option_int in prey_breed_up_down_right_options:
             breed_up_down_right(board,cell)
+            cell.breeding_cooldown_counter = 0
         elif option_int in prey_breed_up_left_options:
             breed_up_left(board,cell)
+            cell.breeding_cooldown_counter = 0
         elif option_int in prey_breed_up_right_options:
             breed_up_right(board,cell)
+            cell.breeding_cooldown_counter = 0
         elif option_int in prey_breed_up_left_right_options:
             breed_up_left_right(board,cell)
+            cell.breeding_cooldown_counter = 0
         elif option_int in prey_breed_down_left_options:
             breed_down_left(board,cell)
+            cell.breeding_cooldown_counter = 0
         elif option_int in prey_breed_down_right_options:
             breed_down_right(board,cell)
+            cell.breeding_cooldown_counter = 0
         elif option_int in prey_breed_left_right_options:
             breed_left_right(board,cell)
+            cell.breeding_cooldown_counter = 0
         elif option_int in prey_breed_down_left_right_options:
             breed_down_left_right(board,cell)
+            cell.breeding_cooldown_counter = 0
+
+        
 
 def count_prey_predators(board):
     prey_count = 0
