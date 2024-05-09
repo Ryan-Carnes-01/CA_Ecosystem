@@ -3,8 +3,6 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
-#FINISH ADDING BREEDING BEHAVIOR - fill out option integers
-
 prey_move_left_options=[9209,2909,2202,2209,9202,2902,1102,1201,1202,2101,2102,2201,9209,2909,9102,9201,9202,1902,2901,2902,1209,2109,2209]
 prey_move_right_options=[9290,2990,2220,2290,9220,2920,1120,1210,1220,2110,2120,2210,9290,2990,9120,9210,9220,1920,2910,2920,1290,2190,2290,] 
 prey_move_down_options=[1012,1021,1022,2011,2012,2021,2022,9029,9092,9012,9021,9022,1092,2091,2092,1029,2019,2029]
@@ -270,12 +268,10 @@ def breed_down_left_right(board,cell):
 
 
 def create_empty_board(rows, columns):
-    print("Creating empty board...\n")
     board = [[None for _ in range(columns)] for _ in range(rows)]
     return board
 
 def populate_board(board, prey_density, predator_density, predator_energy,breeding_cooldown):
-    print("Populating board...\n")
     num_rows = len(board)
     num_cols = len(board[0])
     num_prey = int(num_rows * num_cols * prey_density)
@@ -300,10 +296,10 @@ def populate_board(board, prey_density, predator_density, predator_energy,breedi
     return
 
 def visualize_board(board, filename = None):
-    print("\nVisualizing board...")
+    #print("\nVisualizing board...")
     empty_color = 'white'
-    prey_color = 'green'
-    predator_color = 'red'
+    prey_color = 'turquoise'
+    predator_color = 'orangered'
     cmap = ListedColormap([empty_color, prey_color, predator_color])
 
     #Convert to a numpy array for plotting
@@ -384,10 +380,10 @@ def update_cell(board,cell,option,predator_energy):
     cell_row,cell_col = cell.location
     option_str = ''.join(map(str, option))
     option_int = int(option_str)
-    print(f"CELL: {cell}, OPTION: {option_int}")
+    #print(f"CELL: {cell}, OPTION: {option_int}")
     #if cell has already moved, dont move it
     if cell.move == False:
-        print("     - CELL ALREADY MOVED, SKIPPING")
+        #print("     - CELL ALREADY MOVED, SKIPPING")
         return
     if(isinstance(cell, Predator)): #update predator based on option
         # PREDATOR STARVATION LOGIC

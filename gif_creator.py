@@ -9,7 +9,7 @@ def create_gif_from_directory(directory_path, output_filename, duration=1):
         if file_name.endswith('.png'):
             file_path = os.path.join(directory_path, file_name)
             images.append(imageio.imread(file_path))
-            print(file_path)
+            #print(file_path)
 
     #create gif from images
     if images:

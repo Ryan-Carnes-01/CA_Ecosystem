@@ -20,10 +20,13 @@ def main():
     args = parser.parse_args()
 
     #set up board
+    print("Creating empty board...\n")
     board = create_empty_board(args.rows, args.columns)
+    print("Populating board...\n")
     populate_board(board, args.prey_density, args.predator_density, args.predator_energy,args.breeding_cooldown)
 
     #run for itrs iterations, save generated images to filename.
+    print("Running simulation...")
     for i in range(args.itrs):
         filename = os.path.join(directory, f'image_{i}.png')
         visualize_board(board, filename)
@@ -36,7 +39,8 @@ def main():
             print(f"Remaining Prey: {prey_count}, Remaining Predators: {predator_count}")
             break  # Terminate simulation if there are no prey or predators left
 
-    #create gif out of saved images    
+    #create gif out of saved images  
+    print("Creating gif...")  
     subprocess.run(['python', 'gif_creator.py', directory, os.path.join('runs', f'video.gif')])
 
 if __name__ == "__main__":
