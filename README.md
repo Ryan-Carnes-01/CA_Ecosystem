@@ -4,6 +4,8 @@ This program uses a 2D cellular automata to create a simulated ecosystem with va
 ecosystem.py - contains the class definitions and helper functions for the 2D CA ecosystem.
 gif_creator.py - takes the images created through all iterations and creates a gif out of it.
 main.py - contains the driver code that implements the functions from ecosystem.py. Run this one to run the CA.
+# To install requirements
+pip install -r .\requirements.txt
 # To run the program
 python main.py {--help} {--rows} int {--columns} int {--prey_density} float between 0.0-1.0 {--predator_density} float between 0.0-1.0 {--predator_energy} int {--itrs} int 
 

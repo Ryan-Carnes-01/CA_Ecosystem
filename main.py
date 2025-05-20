@@ -1,6 +1,7 @@
 import argparse
 import os
 import subprocess
+import sys
 from datetime import datetime
 from ecosystem import create_empty_board, populate_board, visualize_board, update_board_state, count_prey_predators
 
@@ -41,7 +42,7 @@ def main():
 
     #create gif out of saved images  
     print("Creating gif...")  
-    subprocess.run(['python', 'gif_creator.py', directory, os.path.join('runs', f'video.gif')])
+    subprocess.run([sys.executable, 'gif_creator.py', directory, os.path.join('runs', f'video.gif')])
 
 if __name__ == "__main__":
     main()
