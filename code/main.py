@@ -7,7 +7,7 @@ from ecosystem import create_empty_board, populate_board, visualize_board, updat
 
 def main():
     #initialize directory to store images/gif    
-    directory = 'runs/images'
+    directory = '../runs/images'
     os.makedirs(directory, exist_ok=True)
     #Parse arguments
     parser = argparse.ArgumentParser(description='Generate and visualize a 2D cellular automata grid.')
@@ -42,7 +42,7 @@ def main():
 
     #create gif out of saved images  
     print("Creating gif...")  
-    subprocess.run([sys.executable, 'gif_creator.py', directory, os.path.join('runs', f'video.gif')])
+    subprocess.run([sys.executable, 'code/gif_creator.py', directory, os.path.join('runs', f'video.gif')])
 
 if __name__ == "__main__":
     main()
